@@ -1,2 +1,2 @@
-Project_pkg
+Project_pkg:play_motion/play_motion:play_motion/play_motion_msgs
 -DCATKIN_DEVEL_PREFIX=/home/joe/Project/devel -DCMAKE_INSTALL_PREFIX=/home/joe/Project/install -G Unix Makefiles
