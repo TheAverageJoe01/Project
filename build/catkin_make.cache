@@ -1,0 +1,2 @@
+Project_pkg
+-DCATKIN_DEVEL_PREFIX=/home/joe/Project/devel -DCMAKE_INSTALL_PREFIX=/home/joe/Project/install -G Unix Makefiles
