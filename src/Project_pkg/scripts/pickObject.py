@@ -1,6 +1,23 @@
 #! /usr/bin/env python3
+"""
+python script to pick to interact with an object 
 
+description:
+    picks up the object
+    closes the gripper around the object
+    the robot then lifts the object and places the object back down onto the table
+    the robot grippers are then opened 
+
+Publish:
+"/gripper_controller/command"
+
+functions:
+    moveToobject
+    pickUpobject
+
+"""
 #imports
+import copy
 from operator import sub
 import rospy 
 from tf.transformations import *
@@ -15,10 +32,10 @@ from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 #global variables
 global robot
-global sub_target_abs_pose
+global subTargetabsPose
 global scene 
-global move_group 
-global grasp_pose 
+global moveGroup 
+global graspPose 
 
 def moveToobject(objectPose):
 
@@ -56,7 +73,7 @@ def moveToobject(objectPose):
     return response
 
 
-def pickObject(msg):
+def pickUpobject(msg):
 
     #global variables
     global moveGroup
@@ -162,17 +179,17 @@ def openGripper():
 if __name__ == '__main__':
 
     #initialise ros node
-    rospy.init_node('pickObject')
+    rospy.init_node('pickUpobject')
     
     moveit_commander.roscpp_initialize(sys.argv)
     robot = moveit_commander.RobotCommander()
     scene = moveit_commander.PlanningSceneInterface()
 
-    move_group = moveit_commander.MoveGroupCommander("arm_torso")
+    moveGroup = moveit_commander.MoveGroupCommander("arm_torso")
 
     approachObjectservice = rospy.Service('/objectApproach', objectApproach, moveToobject)
 
-    graspObjectservice = rospy.Service('/pickObject', Empty, pickObject)
+    graspObjectservice = rospy.Service('/pickUpobject', Empty, pickUpobject)
 
     rospy.loginfo("service is ready")
 

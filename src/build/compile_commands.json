@@ -18,5 +18,60 @@
   "directory": "/home/joe/Project/src/build/gtest/googletest",
   "command": "/usr/bin/g++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_EXPORTS -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC   -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
   "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/run_motion.dir/src/run_motion_node.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/run_motion_node.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/run_motion_node.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -Dplay_motion_helpers_EXPORTS -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g -fPIC   -o CMakeFiles/play_motion_helpers.dir/src/play_motion_helpers.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/play_motion_helpers.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/play_motion_helpers.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/pm_rrbot.dir/test/rrbot.cpp.o -c /home/joe/Project/src/play_motion/play_motion/test/rrbot.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/test/rrbot.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet -isystem /usr/src/googletest/googletest/include -isystem /usr/src/googletest/googletest   -std=c++0x -g   -DGTEST_HAS_PTHREAD=1 -o CMakeFiles/play_motion_helpers_test.dir/test/play_motion_helpers_test.cpp.o -c /home/joe/Project/src/play_motion/play_motion/test/play_motion_helpers_test.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/test/play_motion_helpers_test.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_THREAD_DYN_LINK -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/play_motion.dir/src/play_motion_main.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/play_motion_main.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/play_motion_main.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_THREAD_DYN_LINK -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/play_motion.dir/src/play_motion_server.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/play_motion_server.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/play_motion_server.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_THREAD_DYN_LINK -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/play_motion.dir/src/play_motion.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/play_motion.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/play_motion.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_THREAD_DYN_LINK -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/play_motion.dir/src/move_joint_group.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/move_joint_group.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/move_joint_group.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_THREAD_DYN_LINK -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/play_motion.dir/src/controller_updater.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/controller_updater.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/controller_updater.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_THREAD_DYN_LINK -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet   -std=c++0x -g   -o CMakeFiles/play_motion.dir/src/approach_planner.cpp.o -c /home/joe/Project/src/play_motion/play_motion/src/approach_planner.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/src/approach_planner.cpp"
+},
+{
+  "directory": "/home/joe/Project/src/build/play_motion/play_motion",
+  "command": "/usr/bin/g++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"play_motion\\\" -I/home/joe/Project/src/play_motion/play_motion/include -isystem /home/joe/Project/src/build/devel/include -isystem /opt/ros/noetic/include -isystem /opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -isystem /usr/include/eigen3 -isystem /usr/include/bullet -isystem /usr/src/googletest/googletest/include -isystem /usr/src/googletest/googletest   -std=c++0x -g   -DGTEST_HAS_PTHREAD=1 -o CMakeFiles/play_motion_test.dir/test/play_motion_test.cpp.o -c /home/joe/Project/src/play_motion/play_motion/test/play_motion_test.cpp",
+  "file": "/home/joe/Project/src/play_motion/play_motion/test/play_motion_test.cpp"
 }
 ]

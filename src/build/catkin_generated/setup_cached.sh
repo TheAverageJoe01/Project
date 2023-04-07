@@ -12,4 +12,5 @@ export CMAKE_PREFIX_PATH="/home/joe/Project/src/build/devel:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/home/joe/Project/src/build/devel/lib:$LD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="/home/joe/Project/src/build/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/joe/Project/src/build'
+export PYTHONPATH="/home/joe/Project/src/build/devel/lib/python3/dist-packages:$PYTHONPATH"
 export ROS_PACKAGE_PATH='/home/joe/Project/src:/opt/ros/noetic/share'

@@ -1,5 +1,22 @@
 #!/usr/bin/env python3
+"""
+description:
+    moves robots head until the object is detected 
+    takes postion of the object relative to the robot
+    moves closer to the object to get be at the best position to grab the object
+    Puts in pregrasp configuration to take the object
 
+subscribes:
+    /target_pose/relative
+publishes:
+    /head_controller/command
+    /mobile_base_controller/cmd_vel
+
+functions:
+    objectPositionRel = pass position info to other node
+    displacementChange = move closer to the object
+    pickUpobject = pass info to other node for picking up the object
+"""
 
 #imports
 import rospy
@@ -16,14 +33,14 @@ from std_srvs.srv import Empty, EmptyRequest
 #global variables
 global actionClient
 global pubHeadcontroller
-global sub_target_rel_pose
-global head_2_movement
+global subTargetrelPose
+global head2movement
 global objectFound
 global playMotionG
 global count
 global displacement
-global object_rel_pose
-global object_abs_pose
+global objectRelpose
+global objectAbspose
 
 def defaultPose():
     # go to the default starting position of the tiago robot
@@ -50,7 +67,7 @@ def headMovement():
 
     #global variables
     global pubHeadcontroller
-    global head_2_movement
+    global head2movement
     global objectFound
 
     #create the status for head movement
@@ -74,18 +91,18 @@ def headMovement():
         #wait for the result
         rospy.sleep(1.0)
         # define the head movement 
-        head_2_movement = max(-1, head_2_movement - 0.1)
+        head2movement = max(-1, head2movement - 0.1)
 
 
-def objectPositionRel():
+def objectPositionRel(msg):
 
     #global variables
     global objectFound
-    global sub_target_rel_pose
-    global object_rel_pose
+    global subTargetrelPose
+    global objectRelpose
     global count
 
-    object_rel_pose = msg
+    objectRelpose = msg
 
     #call absolute position function 
     objectPositionAbs()
@@ -121,7 +138,7 @@ def robotPrep():
     rospy.loginfo("preparation done")
 
 
-def adjustHead():
+def displacementChange():
     #global variables
     global displacement
 
@@ -169,15 +186,15 @@ def adjustHead():
 
 def objectPositionAbs():
     #global variables
-    global object_abs_pose
-    global object_rel_pose
+    global objectAbspose
+    global objectRelpose
 
     try:
         rel_to_abs = rospy.ServiceProxy('/Absolute', absoluteResponse)
-        msg = PoseStamped(pose = object_rel_pose )
+        msg = PoseStamped(pose = objectRelpose )
         msg.header.frame_id = 'xtion_rgb_frame'
 
-        object_abs_pose = rel_to_abs(msg).absolute_pose.pose
+        objectAbspose = rel_to_abs(msg).absolute_pose.pose
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
 
@@ -202,10 +219,10 @@ if __name__ == '__main__':
     pubHeadcontroller = rospy.Publisher('/head_controller/command', JointTrajectory, queue_size=1)
 
     #subscribing to the target position
-    sub_target_rel_pose = rospy.subscriber('/target_pose/relative', Pose, objectPositionRel)
+    subTargetrelPose = rospy.subscriber('/target_pose/relative', Pose, objectPositionRel)
 
     #create an empty value 
-    head_2_movement = 0
+    head2movement = 0
     objectFound = False
     count = 0
 
@@ -216,28 +233,28 @@ if __name__ == '__main__':
 
 
     #define displacement 
-    displacement = 0.1 - object_abs_pose.position.y
+    displacement = 0.1 - objectAbspose.position.y
 
     if displacement > 0:
-        adjustHead()
+        displacementChange()
     
     robotPrep()
     rospy.sleep(2)
 
     rospy.wait_for_service('/object_approach')
     try:
-        sub_target_rel_pose.unregister()
+        subTargetrelPose.unregister()
         objectApproach = rospy.ServiceProxy('/object_approach', objectApproach)
-        objectApproach(object_abs_pose)
+        objectApproach(objectAbspose)
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
         exit(1)
     
-    rospy.wait_for_service('/pickUpObject', Empty)
+    rospy.wait_for_service('/pickUpobject', Empty)
     try:
-        sub_target_rel_pose.unregister()
-        pickUpObject = rospy.ServiceProxy('/pickUpObject', Empty)
-        pickUpObject()
+        subTargetrelPose.unregister()
+        pickUpobject = rospy.ServiceProxy('/pickUpobject', Empty)
+        pickUpobject()
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
         exit(1)

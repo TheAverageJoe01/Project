@@ -1,4 +1,14 @@
-#!user/bin/env python3
+#!/usr/bin/env python3
+"""
+description:
+    used to find objects in the scene
+
+subscribes:
+    /xtion/rgb/image_raw
+publishes:
+    /target_pose/relative
+    /target_pose/relative/stamped
+"""
 
 #imports
 from sensor_msgs.msg import Image
@@ -10,14 +20,11 @@ from scipy.spatial.transform import Rotation as R
 
 mpObjectron = mp.solutions.objectron
 
-
-global pub_target_rel_pose
-global pub_target_rel_pose_stamped
-
 def detection(image):
 
-    global pub_target_rel_pose
-    global pub_target_rel_pose_stamped
+    # define the publishers as variables inside the function
+    pub_target_rel_pose = rospy.Publisher("/target_rel_pose", Pose, queue_size=1)
+    pub_target_rel_pose_stamped = rospy.Publisher("/target_rel_pose_stamped", PoseStamped, queue_size=1)
 
     # define the static model carried from mediaPipe objectron
     with mpObjectron.Objectron(
@@ -64,18 +71,10 @@ def detection(image):
             pub_target_rel_pose_stamped.publish(poseStamped)
 
 
-
 if __name__ == '__main__':
     rospy.init_node('objectron_detection', anonymous=True)
 
     #subscribe to camera for info
     cameraSub = rospy.Subscriber("/camera/rgb/image_raw", Image, detection)
-    #publish position of object
-    pub_target_rel_pose = rospy.Publisher("/target_rel_pose", Pose, queue_size=1)
-
-    #publish to print the position of the object
-    pub_target_rel_pose_stamped = rospy.Publisher("/target_rel_pose_stamped", PoseStamped, queue_size=1)
 
     rospy.spin()
-
-
