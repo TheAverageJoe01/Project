@@ -1,80 +1,74 @@
-#!/usr/bin/env python3
-"""
-description:
-    used to find objects in the scene
-
-subscribes:
-    /xtion/rgb/image_raw
-publishes:
-    /target_pose/relative
-    /target_pose/relative/stamped
-"""
-
-#imports
-from sensor_msgs.msg import Image
-import rospy
-import ros_numpy
-from geometry_msgs.msg import Pose, Point, Quaternion, PoseStamped
 import mediapipe as mp
-from scipy.spatial.transform import Rotation as R
-
-mpObjectron = mp.solutions.objectron
-
-def detection(image):
-
-    # define the publishers as variables inside the function
-    pub_target_rel_pose = rospy.Publisher("/target_rel_pose", Pose, queue_size=1)
-    pub_target_rel_pose_stamped = rospy.Publisher("/target_rel_pose_stamped", PoseStamped, queue_size=1)
-
-    # define the static model carried from mediaPipe objectron
-    with mpObjectron.Objectron(
-            static_image_mode=False,
-            maxObjects=5,  # set maxObjects to the maximum number of objects to detect
-            minDetectionConfidence=0.5,
-            modelN='cup') as objectron:
-
-        # get the output as an image
-        outcome = objectron.process(ros_numpy.numpify(image))
-
-        for i, detected_object in enumerate(outcome.detected_objects):
-
-            # create a message to publish
-            rospy.loginfo(f"objectron detected, object {i}")
-
-            messagePose = Pose()
-
-            # position and orientation
-            pos = detected_object.translation
-            print(-pos[2], pos[0], pos[1])
-
-            # rotation and quaternion
-            quat = R.from_matrix(detected_object.rotation_matrix).as_quat()
-
-            # finding orientation of the object with quaternions
-            messagePose.orientation.x = quat[0]
-            messagePose.orientation.y = quat[1]
-            messagePose.orientation.z = quat[2]
-            messagePose.orientation.w = quat[3]
-            # finding position of the object with transformation
-            messagePose.position.x = -pos[2]
-            messagePose.position.y = pos[0]
-            messagePose.position.z = pos[1]
-
-            # publishing the message
-            pub_target_rel_pose.publish(messagePose)
-
-            poseStamped = PoseStamped(Pose=messagePose)
-            # poseStamped used as a frame id i.e frame of the camera
-            poseStamped.header.frame_id = "camera_link"
-
-            # publishing the message
-            pub_target_rel_pose_stamped.publish(poseStamped)
+import numpy as np
+import cv2
+from mediapipe.tasks import python
+from mediapipe.tasks.python import vision
 
 
-if __name__ == '__main__':
-    rospy.init_node('objectron_detection', anonymous=True)
+MARGIN = 10  # pixels
+ROW_SIZE = 10  # pixels
+FONT_SIZE = 1
+FONT_THICKNESS = 1
+TEXT_COLOR = (255, 0, 0)  # red
 
-    #subscribe to camera for info
-    cameraSub = rospy.Subscriber("/camera/rgb/image_raw", Image, detection)
 
-    rospy.spin()
+def visualize(image, detection_result) -> np.ndarray:
+  """Draws bounding boxes on the input image and return it.
+  Args:
+    image: The input RGB image.
+    detection_result: The list of all "Detection" entities to be visualize.
+  Returns:
+    Image with bounding boxes.
+  """
+  for detection in detection_result.detections:
+    # Draw bounding_box
+    bbox = detection.bounding_box
+    start_point = bbox.origin_x, bbox.origin_y
+    end_point = bbox.origin_x + bbox.width, bbox.origin_y + bbox.height
+    cv2.rectangle(image, start_point, end_point, TEXT_COLOR, 3)
+
+    # Draw label and score
+    category = detection.categories[0]
+    category_name = category.category_name
+    probability = round(category.score, 2)
+    result_text = category_name + ' (' + str(probability) + ')'
+    text_location = (MARGIN + bbox.origin_x,
+                     MARGIN + ROW_SIZE + bbox.origin_y)
+    cv2.putText(image, result_text, text_location, cv2.FONT_HERSHEY_PLAIN,
+                FONT_SIZE, TEXT_COLOR, FONT_THICKNESS)
+
+  return image
+
+
+
+
+BaseOptions = mp.tasks.BaseOptions
+ObjectDetector = mp.tasks.vision.ObjectDetector
+ObjectDetectorOptions = mp.tasks.vision.ObjectDetectorOptions
+VisionRunningMode = mp.tasks.vision.RunningMode
+
+efficientdet_lite0= '/home/joe/Project/src/Project_pkg/include/models/efficientdet_lite0_uint8.tflite'
+efficientdet_lite2 = '/home/joe/Project/src/Project_pkg/include/models/efficientdet_lite2_unit8.tflite'
+mobile ='/home/joe/Project/src/Project_pkg/include/models/mobilenetv2_ssd_256_uint8.tflite'
+
+options = ObjectDetectorOptions(
+    base_options=BaseOptions(model_asset_path= efficientdet_lite2),
+    max_results=5,
+    running_mode=VisionRunningMode.IMAGE)
+
+detector = vision.ObjectDetector.create_from_options(options)
+
+# Load the input image.
+image = mp.Image.create_from_file('/home/joe/Project/src/Project_pkg/include/images/cat_and_dog.jpg')
+print(image)
+
+#  Detect objects in the input image.
+detection_result = detector.detect(image)
+
+# Process the detection result. In this case, visualize it.
+image_copy = np.copy(image.numpy_view())
+print(image_copy)
+annotated_image = visualize(image_copy, detection_result)
+rgb_annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
+cv2.imshow("",rgb_annotated_image)
+cv2.waitKey(-1)

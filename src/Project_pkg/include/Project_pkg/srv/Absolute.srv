@@ -1,3 +1,0 @@
-geometry_msgs/poseStamped relativePose
----
-geometry_msgs/poseStamped absolutePose
