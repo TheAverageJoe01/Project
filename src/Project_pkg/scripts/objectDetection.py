@@ -24,7 +24,8 @@ def visualize(image, detection_result) -> np.ndarray:
     Image with bounding boxes.
   """
   centre = 0
-  imageWidth =0
+  imageWidth = 0
+  imageLabel = 'a'
   for detection in detection_result.detections:
     # Draw bounding_box
     bbox = detection.bounding_box
@@ -38,6 +39,7 @@ def visualize(image, detection_result) -> np.ndarray:
     # Draw label and score
     category = detection.categories[0]
     category_name = category.category_name
+    imageLabel = category_name
     probability = round(category.score, 2)
     result_text = category_name + ' (' + str(probability) + ')'
     text_location = (MARGIN + bbox.origin_x,
@@ -45,7 +47,7 @@ def visualize(image, detection_result) -> np.ndarray:
     cv2.putText(image, result_text, text_location, cv2.FONT_HERSHEY_PLAIN,
                 FONT_SIZE, TEXT_COLOR, FONT_THICKNESS)
 
-  return image , centre , imageWidth
+  return image , centre , imageWidth , imageLabel
 
 
 
@@ -55,9 +57,7 @@ ObjectDetector = mp.tasks.vision.ObjectDetector
 ObjectDetectorOptions = mp.tasks.vision.ObjectDetectorOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
 
-efficientdet_lite0= '/home/joe/Project/src/Project_pkg/include/models/efficientdet_lite0_uint8.tflite'
-efficientdet_lite2 = '/home/joe/Project/src/Project_pkg/include/models/efficientdet_lite2_uint8.tflite'
-mobile ='/home/joe/Project/src/Project_pkg/include/models/mobilenetv2_ssd_256_uint8.tflite'
+efficientdet_lite0= '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/models/efficientdet_lite0_uint8.tflite'
 
 options = ObjectDetectorOptions(
     base_options=BaseOptions(model_asset_path= efficientdet_lite0),
@@ -67,12 +67,12 @@ options = ObjectDetectorOptions(
 
 detector = vision.ObjectDetector.create_from_options(options)
 
-cup = '/home/joe/Project/src/Project_pkg/include/images/cup.jpg'
-potted_plant = '/home/joe/Project/src/Project_pkg/include/images/potted plant.jpg'
-apple= '/home/joe/Project/src/Project_pkg/include/images/apple.jpeg'
-glass = '/home/joe/Project/src/Project_pkg/include/images/wine_glass.jpg'
+cup = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/cup.jpg'
+potted_plant = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/potted plant.jpg'
+apple= '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/apple.jpeg'
+glass = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/wine_glass.jpg'
 # Load the input image.
-image = mp.Image.create_from_file(glass)
+image = mp.Image.create_from_file(potted_plant)
 #cv2.imshow("",cv2.imread(cat_dog))
 #cv2.waitKey(-1)
 
@@ -83,9 +83,10 @@ detection_result = detector.detect(image)
 image_copy = np.copy(image.numpy_view())
 #print(image_copy)
 
-annotated_image, imageCentre , imageWidth = visualize(image_copy, detection_result)
+annotated_image, imageCentre , imageWidth , imageLabel = visualize(image_copy, detection_result)
 rgb_annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
 print(imageCentre)
 print(imageWidth)
+print(imageLabel)
 cv2.imshow("",rgb_annotated_image)
 cv2.waitKey(0)

@@ -15,6 +15,10 @@ FONT_SIZE = 1
 FONT_THICKNESS = 1
 TEXT_COLOR = (255, 0, 0)  # red
 
+centre = 0
+imageWidth = 0
+imageLabel = 'a'
+
 def visualize(image, detection_result) -> np.ndarray:
     """Draws bounding boxes on the input image and return it.
     Args:
@@ -23,8 +27,6 @@ def visualize(image, detection_result) -> np.ndarray:
     Returns:
         Image with bounding boxes.
     """
-    centre = 0
-    imageWidth = 0
     for detection in detection_result.detections:
         # Draw bounding_box
         bbox = detection.bounding_box
@@ -38,6 +40,7 @@ def visualize(image, detection_result) -> np.ndarray:
         # Draw label and score
         category = detection.categories[0]
         category_name = category.category_name
+        imageLabel = category_name
         probability = round(category.score, 2)
         result_text = category_name + ' (' + str(probability) + ')'
         text_location = (MARGIN + bbox.origin_x,
@@ -45,22 +48,22 @@ def visualize(image, detection_result) -> np.ndarray:
         cv2.putText(image, result_text, text_location, cv2.FONT_HERSHEY_PLAIN,
                     FONT_SIZE, TEXT_COLOR, FONT_THICKNESS)
 
-    return image , centre , imageWidth
+    return image , centre , imageWidth , imageLabel
 
 
-def object_detector_node():
-    rospy.init_node('object_detector_node', anonymous=True)
+def objectDetection():
+    rospy.init_node('objectDetection', anonymous=True)
     bridge = CvBridge()
 
     # Load the input image.
-    cup = '/home/joe/Project/src/Project_pkg/include/images/cup.jpg'
+    cup = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/cup.jpg'
     image = cv2.imread(cup)
     # Convert image to RGB
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image_msg = bridge.cv2_to_imgmsg(image, "rgb8")
 
     # Create object detector
-    efficientdet_lite0= '/home/joe/Project/src/Project_pkg/include/models/efficientdet_lite0_uint8.tflite'
+    efficientdet_lite0= '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/models/efficientdet_lite0_uint8.tflite'
     options = vision.ObjectDetectorOptions(
         base_options=mp.tasks.BaseOptions(model_asset_path=efficientdet_lite0),
         max_results=5,
@@ -73,17 +76,15 @@ def object_detector_node():
 
     # Process the detection result. In this case, visualize it.
     image_copy = np.copy(image)
-    annotated_image, imageCentre , imageWidth = visualize(image_copy, detection_result)
+    annotated_image, imageCentre , imageWidth, imageLabel  = visualize(image_copy, detection_result)
     rgb_annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
     print(imageCentre)
     print(imageWidth)
-    cv2.imshow("", rgb_annotated_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    print(imageLabel)
 
 
 if __name__ == '__main__':
     try:
-        object_detector_node()
+        objectDetection()
     except rospy.ROSInterruptException:
         pass
