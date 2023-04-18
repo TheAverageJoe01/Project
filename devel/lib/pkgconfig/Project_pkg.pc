@@ -1,4 +1,4 @@
-prefix=/home/joe/Project/devel
+prefix=/home/joe/Desktop/work/Project stuff/Project/devel
 
 Name: Project_pkg
 Description: Description of Project_pkg

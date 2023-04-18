@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/joe/Project/src
+CMAKE_SOURCE_DIR = "/home/joe/Desktop/work/Project stuff/Project/src"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/joe/Project/build
+CMAKE_BINARY_DIR = "/home/joe/Desktop/work/Project stuff/Project/build"
 
 # Utility rule file for std_msgs_generate_messages_py.
 
@@ -63,10 +63,10 @@ Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/build: std_msgs_generat
 .PHONY : Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/build
 
 Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/clean:
-	cd /home/joe/Project/build/Project_pkg && $(CMAKE_COMMAND) -P CMakeFiles/std_msgs_generate_messages_py.dir/cmake_clean.cmake
+	cd "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg" && $(CMAKE_COMMAND) -P CMakeFiles/std_msgs_generate_messages_py.dir/cmake_clean.cmake
 .PHONY : Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/clean
 
 Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/depend:
-	cd /home/joe/Project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/joe/Project/src /home/joe/Project/src/Project_pkg /home/joe/Project/build /home/joe/Project/build/Project_pkg /home/joe/Project/build/Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd "/home/joe/Desktop/work/Project stuff/Project/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/joe/Desktop/work/Project stuff/Project/src" "/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg" "/home/joe/Desktop/work/Project stuff/Project/build" "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg" "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : Project_pkg/CMakeFiles/std_msgs_generate_messages_py.dir/depend
 

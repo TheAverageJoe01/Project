@@ -52,15 +52,13 @@ def visualize(image, detection_result) -> np.ndarray:
 
 
 def objectDetection():
-    rospy.init_node('objectDetection', anonymous=True)
     bridge = CvBridge()
 
     # Load the input image.
     cup = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/cup.jpg'
-    image = cv2.imread(cup)
     # Convert image to RGB
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image_msg = bridge.cv2_to_imgmsg(image, "rgb8")
+    image = mp.Image.create_from_file(cup)
+    #image_msg = bridge.cv2_to_imgmsg(image, "rgb8")
 
     # Create object detector
     efficientdet_lite0= '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/models/efficientdet_lite0_uint8.tflite'
@@ -72,10 +70,10 @@ def objectDetection():
     detector = vision.ObjectDetector.create_from_options(options)
 
     # Detect objects in the input image.
-    detection_result = detector.detect(mp.Image(image_msg))
+    detection_result = detector.detect(image)
 
     # Process the detection result. In this case, visualize it.
-    image_copy = np.copy(image)
+    image_copy = np.copy(image.numpy_view())
     annotated_image, imageCentre , imageWidth, imageLabel  = visualize(image_copy, detection_result)
     rgb_annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
     print(imageCentre)
@@ -84,6 +82,7 @@ def objectDetection():
 
 
 if __name__ == '__main__':
+    rospy.init_node('objectDetection', anonymous=True)
     try:
         objectDetection()
     except rospy.ROSInterruptException:

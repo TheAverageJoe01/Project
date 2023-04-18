@@ -1,21 +1,21 @@
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
-Change Dir: /home/joe/Project/build/CMakeFiles/CMakeTmp
+Change Dir: /home/joe/Desktop/work/Project stuff/Project/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_1d5ae/fast && /usr/bin/make -f CMakeFiles/cmTC_1d5ae.dir/build.make CMakeFiles/cmTC_1d5ae.dir/build
-make[1]: Entering directory '/home/joe/Project/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1d5ae.dir/src.c.o
-/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_1d5ae.dir/src.c.o   -c /home/joe/Project/build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_1d5ae
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d5ae.dir/link.txt --verbose=1
-/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_1d5ae.dir/src.c.o  -o cmTC_1d5ae 
-/usr/bin/ld: CMakeFiles/cmTC_1d5ae.dir/src.c.o: in function `main':
+Run Build Command(s):/usr/bin/make cmTC_197ae/fast && /usr/bin/make -f CMakeFiles/cmTC_197ae.dir/build.make CMakeFiles/cmTC_197ae.dir/build
+make[1]: Entering directory '/home/joe/Desktop/work/Project stuff/Project/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_197ae.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_197ae.dir/src.c.o   -c "/home/joe/Desktop/work/Project stuff/Project/build/CMakeFiles/CMakeTmp/src.c"
+Linking C executable cmTC_197ae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_197ae.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_197ae.dir/src.c.o  -o cmTC_197ae 
+/usr/bin/ld: CMakeFiles/cmTC_197ae.dir/src.c.o: in function `main':
 src.c:(.text+0x46): undefined reference to `pthread_create'
 /usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
 /usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_1d5ae.dir/build.make:87: cmTC_1d5ae] Error 1
-make[1]: Leaving directory '/home/joe/Project/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_1d5ae/fast] Error 2
+make[1]: *** [CMakeFiles/cmTC_197ae.dir/build.make:87: cmTC_197ae] Error 1
+make[1]: Leaving directory '/home/joe/Desktop/work/Project stuff/Project/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_197ae/fast] Error 2
 
 
 Source file was:
@@ -39,20 +39,20 @@ int main(void)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/joe/Project/build/CMakeFiles/CMakeTmp
+Change Dir: /home/joe/Desktop/work/Project stuff/Project/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_c332c/fast && /usr/bin/make -f CMakeFiles/cmTC_c332c.dir/build.make CMakeFiles/cmTC_c332c.dir/build
-make[1]: Entering directory '/home/joe/Project/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_c332c.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_c332c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_c332c
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c332c.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_c332c.dir/CheckFunctionExists.c.o  -o cmTC_c332c  -lpthreads 
+Run Build Command(s):/usr/bin/make cmTC_0565a/fast && /usr/bin/make -f CMakeFiles/cmTC_0565a.dir/build.make CMakeFiles/cmTC_0565a.dir/build
+make[1]: Entering directory '/home/joe/Desktop/work/Project stuff/Project/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0565a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_0565a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0565a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0565a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_0565a.dir/CheckFunctionExists.c.o  -o cmTC_0565a  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_c332c.dir/build.make:87: cmTC_c332c] Error 1
-make[1]: Leaving directory '/home/joe/Project/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_c332c/fast] Error 2
+make[1]: *** [CMakeFiles/cmTC_0565a.dir/build.make:87: cmTC_0565a] Error 1
+make[1]: Leaving directory '/home/joe/Desktop/work/Project stuff/Project/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_0565a/fast] Error 2
 
 
 
