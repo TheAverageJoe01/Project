@@ -52,6 +52,9 @@ def visualize(image, detection_result) -> np.ndarray:
 
 
 def objectDetection():
+    """
+    Object detection using mediapipe.
+    """
     bridge = CvBridge()
 
     # Load the input image.
