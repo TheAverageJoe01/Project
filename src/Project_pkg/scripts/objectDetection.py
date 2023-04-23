@@ -7,6 +7,27 @@ import cv2
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
+import os
+import pathlib
+
+MODELDIR = pathlib.Path(os.path.join(pathlib.Path(__file__).parent.absolute(),'models')).glob('**/*')
+
+IMAGEDIR = pathlib.Path(os.path.join(pathlib.Path(__file__).parent.absolute(),'images')).glob('**/*')
+
+models = list()
+for i in MODELDIR:
+  if i.is_file():
+    models.append(i)
+print(models)
+
+images = {}
+for i in IMAGEDIR:
+  if i.is_file():
+    images[i.stem] = str(i)
+
+print(images)
+
+
 
 MARGIN = 10  # pixels
 ROW_SIZE = 10  # pixels
@@ -57,9 +78,10 @@ ObjectDetector = mp.tasks.vision.ObjectDetector
 ObjectDetectorOptions = mp.tasks.vision.ObjectDetectorOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
 
-efficientdet_lite0= '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/models/efficientdet_lite0_uint8.tflite'
+efficientdet_lite0= models[0]
+print(f"Model - {efficientdet_lite0}")
 
-options = ObjectDetectorOptions(
+options = ObjectDetectorOptions( 
     base_options=BaseOptions(model_asset_path= efficientdet_lite0),
     max_results=5,
     score_threshold=0.5,
@@ -67,12 +89,9 @@ options = ObjectDetectorOptions(
 
 detector = vision.ObjectDetector.create_from_options(options)
 
-cup = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/cup.jpg'
-potted_plant = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/potted plant.jpg'
-apple= '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/apple.jpeg'
-glass = '/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/scripts/images/wine_glass.jpg'
+
 # Load the input image.
-image = mp.Image.create_from_file(potted_plant)
+image = mp.Image.create_from_file(images["potted_plant"])
 #cv2.imshow("",cv2.imread(cat_dog))
 #cv2.waitKey(-1)
 
@@ -85,8 +104,8 @@ image_copy = np.copy(image.numpy_view())
 
 annotated_image, imageCentre , imageWidth , imageLabel = visualize(image_copy, detection_result)
 rgb_annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
-print(imageCentre)
-print(imageWidth)
-print(imageLabel)
+print(f"image centre: {imageCentre}")
+print(f"image width: {imageWidth}")
+print(f"image name: {imageLabel}")
 cv2.imshow("",rgb_annotated_image)
 cv2.waitKey(0)
