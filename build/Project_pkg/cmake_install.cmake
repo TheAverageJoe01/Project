@@ -1,8 +1,8 @@
-# Install script for directory: /home/joe/Desktop/work/Project stuff/Project/src/Project_pkg
+# Install script for directory: /home/joe/Desktop/work/Project/src/Project_pkg
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/joe/Desktop/work/Project stuff/Project/install")
+  set(CMAKE_INSTALL_PREFIX "/home/joe/Desktop/work/Project/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg/catkin_generated/installspace/Project_pkg.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/joe/Desktop/work/Project/build/Project_pkg/catkin_generated/installspace/Project_pkg.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Project_pkg/cmake" TYPE FILE FILES
-    "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg/catkin_generated/installspace/Project_pkgConfig.cmake"
-    "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg/catkin_generated/installspace/Project_pkgConfig-version.cmake"
+    "/home/joe/Desktop/work/Project/build/Project_pkg/catkin_generated/installspace/Project_pkgConfig.cmake"
+    "/home/joe/Desktop/work/Project/build/Project_pkg/catkin_generated/installspace/Project_pkgConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Project_pkg" TYPE FILE FILES "/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/Project_pkg" TYPE FILE FILES "/home/joe/Desktop/work/Project/src/Project_pkg/package.xml")
 endif()
 

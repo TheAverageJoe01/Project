@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/joe/Desktop/work/Project stuff/Project/src"
+CMAKE_SOURCE_DIR = /home/joe/Desktop/work/Project/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/joe/Desktop/work/Project stuff/Project/build"
+CMAKE_BINARY_DIR = /home/joe/Desktop/work/Project/build
 
 # Utility rule file for rosgraph_msgs_generate_messages_lisp.
 
@@ -63,10 +63,10 @@ Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build: rosgraph_
 .PHONY : Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
 
 Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean:
-	cd "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg" && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/cmake_clean.cmake
+	cd /home/joe/Desktop/work/Project/build/Project_pkg && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/cmake_clean.cmake
 .PHONY : Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
 
 Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend:
-	cd "/home/joe/Desktop/work/Project stuff/Project/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/joe/Desktop/work/Project stuff/Project/src" "/home/joe/Desktop/work/Project stuff/Project/src/Project_pkg" "/home/joe/Desktop/work/Project stuff/Project/build" "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg" "/home/joe/Desktop/work/Project stuff/Project/build/Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/DependInfo.cmake" --color=$(COLOR)
+	cd /home/joe/Desktop/work/Project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/joe/Desktop/work/Project/src /home/joe/Desktop/work/Project/src/Project_pkg /home/joe/Desktop/work/Project/build /home/joe/Desktop/work/Project/build/Project_pkg /home/joe/Desktop/work/Project/build/Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : Project_pkg/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend
 

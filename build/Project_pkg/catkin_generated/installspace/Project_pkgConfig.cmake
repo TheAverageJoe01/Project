@@ -67,14 +67,14 @@ set(Project_pkg_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(Project_pkg_SOURCE_PREFIX /home/joe/Desktop/work/Project stuff/Project/src/Project_pkg)
-  set(Project_pkg_DEVEL_PREFIX /home/joe/Desktop/work/Project stuff/Project/devel)
+  set(Project_pkg_SOURCE_PREFIX /home/joe/Desktop/work/Project/src/Project_pkg)
+  set(Project_pkg_DEVEL_PREFIX /home/joe/Desktop/work/Project/devel)
   set(Project_pkg_INSTALL_PREFIX "")
   set(Project_pkg_PREFIX ${Project_pkg_DEVEL_PREFIX})
 else()
   set(Project_pkg_SOURCE_PREFIX "")
   set(Project_pkg_DEVEL_PREFIX "")
-  set(Project_pkg_INSTALL_PREFIX /home/joe/Desktop/work/Project stuff/Project/install)
+  set(Project_pkg_INSTALL_PREFIX /home/joe/Desktop/work/Project/install)
   set(Project_pkg_PREFIX ${Project_pkg_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/joe/Desktop/work/Project stuff/Project/install/lib;/opt/ros/noetic/lib)
+    foreach(path /home/joe/Desktop/work/Project/install/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
