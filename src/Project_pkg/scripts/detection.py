@@ -34,12 +34,13 @@ class tiagoDetection:
         self.imageLabel = 'a'
         self.models = self.get_models()
         #self.annotated_image, self.imageCentre , self.imageWidth , self.imageLabel = self.visualize(image_copy, detection_result)
-        self.loopRate = rospy.Rate(10)
+        #self.loopRate = rospy.Rate(10)
 
 
 
-        rospy.Subscriber("/ /rgb/image_rect_color", Image, self.callback, queue_size=1, buff_size=2058)
+        rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.test_callback, queue_size=1, buff_size=2058)
 
+        print(rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.test_callback, queue_size=1, buff_size=2058))
 
 
 
@@ -92,6 +93,10 @@ class tiagoDetection:
                         FONT_SIZE, TEXT_COLOR, FONT_THICKNESS)
 
         return image , centre , imageWidth , imageLabel
+    
+
+    def point_callback(self, data):
+        self.point_cloud = data
 
     def callback(self, data):
         cv2.namedWindow("tiagoImage")
@@ -113,7 +118,7 @@ class tiagoDetection:
 
 
         # Load the input image.
-        image = mp.Image.create_from_file(imageCV)
+        image = mp.Image(imageCV)
         #  Detect objects in the input image.
         detection_result = detector.detect(image)
 
@@ -138,28 +143,10 @@ class tiagoDetection:
 # from file/ sensor -> 
 
 
-IMAGEDIR = pathlib.Path(os.path.join(pathlib.Path(__file__).parent.absolute(),'images')).glob('**/*')
-
-
-
-images = {}
-for i in IMAGEDIR:
-  if i.is_file():
-    images[i.stem] = str(i)
-
-
-
-image = mp.Image.create_from_file(images["potted_plant"])
-
-
-print(images)
-
 
 
 
 if __name__ == '__main__':
     print("Starting object detector")
     tiagoDetection = tiagoDetection()
-    
-    print(image)
     #tiagoDetection.callback(image)
