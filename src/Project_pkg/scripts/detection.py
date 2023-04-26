@@ -38,9 +38,9 @@ class tiagoDetection:
 
 
 
-        rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.test_callback, queue_size=1, buff_size=2058)
+        rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.callback, queue_size=1, buff_size=2058)
 
-        print(rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.test_callback, queue_size=1, buff_size=2058))
+        # print(rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.test_callback, queue_size=1, buff_size=2058))
 
 
 
@@ -95,12 +95,27 @@ class tiagoDetection:
         return image , centre , imageWidth , imageLabel
     
 
-    def point_callback(self, data):
-        self.point_cloud = data
+
+
+    # def test_callback(self, data):
+    #     print("test_callback")
+    #     cv2.namedWindow("tiago_image")
+    #     if self.count == 0:
+    #         cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+    #         cv2.imshow("tiago_image", cv_image)
+    #         cv2.waitKey(1)
+    #     elif self.count > 10:
+    #         self.count = 0
+    #     else:
+    #         self.count += 1
+
+    # def point_callback(self, data):
+    #     self.point_cloud = data
 
     def callback(self, data):
         cv2.namedWindow("tiagoImage")
-        imageCV = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        imageCV = self.bridge.imgmsg_to_cv2(data, "bgr8")[:, :, ::-1]
+
         BaseOptions = mp.tasks.BaseOptions
         ObjectDetectorOptions = mp.tasks.vision.ObjectDetectorOptions
         VisionRunningMode = mp.tasks.vision.RunningMode
@@ -118,7 +133,8 @@ class tiagoDetection:
 
 
         # Load the input image.
-        image = mp.Image(imageCV)
+        image = mp.Image(image_format=mp.ImageFormat.SRGB, data=imageCV)
+
         #  Detect objects in the input image.
         detection_result = detector.detect(image)
 
@@ -134,8 +150,6 @@ class tiagoDetection:
         cv2.imshow("",rgb_annotated_image)
         cv2.waitKey(0)
     
-    def cv2tomp(self, image):
-        return 0 
 
 
 
@@ -147,6 +161,8 @@ class tiagoDetection:
 
 
 if __name__ == '__main__':
+    rospy.init_node('tiago_detection')
     print("Starting object detector")
     tiagoDetection = tiagoDetection()
     #tiagoDetection.callback(image)
+    rospy.spin()
