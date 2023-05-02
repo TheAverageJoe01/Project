@@ -1,0 +1,8 @@
+prefix=/home/joe/Desktop/work/Project/install
+
+Name: tiago_detection
+Description: Description of tiago_detection
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

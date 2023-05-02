@@ -5,4 +5,5 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 subdirs("gtest")
-subdirs("Project_pkg")
+subdirs("project_pkg")
+subdirs("tiago_detector")
