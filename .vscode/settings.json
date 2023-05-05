@@ -7,5 +7,5 @@
         "/home/joe/Project/devel/lib/python3/dist-packages",
         "/opt/ros/noetic/lib/python3/dist-packages"
     ],
-    "cmake.sourceDirectory": "${workspaceFolder}/src/Project_pkg"
+    "cmake.sourceDirectory": "/home/joe/Desktop/work/Project/src/project_pkg"
 }

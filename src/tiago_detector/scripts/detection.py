@@ -6,6 +6,7 @@ import mediapipe as mp
 import numpy as np
 import cv2
 from cv_bridge import CvBridge
+import ros_numpy
 import os
 import pathlib
 from mediapipe.tasks.python import vision
@@ -21,7 +22,7 @@ class tiagoDetection:
         self.imageCentre_pub = rospy.Publisher('image_centre', Float32, queue_size=10)
         self.imageWidth_pub = rospy.Publisher('image_width', Float32, queue_size=10)
         self.imageLabel_pub = rospy.Publisher('image_label', String, queue_size=10)
-        rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.callback, queue_size=1, buff_size=2058)
+        rospy.Subscriber("/xtion/rgb/image_raw", Image, self.callback, queue_size=1, buff_size=2058)
         
     def get_models(self):
         MODELDIR = pathlib.Path(os.path.join(pathlib.Path(__file__).parent.absolute(),'models')).glob('**/*')
@@ -69,21 +70,21 @@ class tiagoDetection:
     def callback(self, data):
         if self.count == 0:
                 
-            imageCV = self.bridge.imgmsg_to_cv2(data, "bgr8")
+
             #create a counter 
-            imageNP = np.asarray(imageCV)
-            print(imageNP)
+            imageNP = ros_numpy.numpify(data)
+
             BaseOptions = mp.tasks.BaseOptions
             ObjectDetectorOptions = mp.tasks.vision.ObjectDetectorOptions
             VisionRunningMode = mp.tasks.vision.RunningMode
 
             efficientdet_lite0= self.models[0]
-            print(f"Model - {efficientdet_lite0}")
+            #print(f"Model - {efficientdet_lite0}")
 
             options = ObjectDetectorOptions( 
                 base_options=BaseOptions(model_asset_path= efficientdet_lite0),
                 max_results=5,
-                score_threshold=0.5,
+                score_threshold=0.4,
                 running_mode=VisionRunningMode.IMAGE)
 
             detector = vision.ObjectDetector.create_from_options(options)
@@ -101,11 +102,15 @@ class tiagoDetection:
 
             annotated_image, imageCentre , imageWidth , imageLabel = self.visualize(image_copy, detection_result)
             rgb_annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
-            print(f"image centre: {imageCentre}")
-            print(f"image width: {imageWidth}")
-            print(f"image name: {imageLabel}")
-            #cv2.imshow("",rgb_annotated_image)
-            cv2.imshow("",imageCV)
+            if imageLabel!= '':
+                print(f"image centre: {imageCentre}")
+                print(f"image width: {imageWidth}")
+
+                print(f"image name: {imageLabel}")
+                rospy.loginfo("Object Found")
+
+            #cv2.imshow("",image_copy)
+            cv2.imshow("",image_copy)
             cv2.waitKey(1)
             #rospy.spinOnce()
         elif self.count > 50:
@@ -128,5 +133,5 @@ if __name__ == '__main__':
     rospy.init_node('tiago_detection')
     print("Starting object detector")
     tiagoDetection = tiagoDetection()
-    #tiagoDetection.callback(image)
+    
     rospy.spin()
