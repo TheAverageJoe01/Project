@@ -91,7 +91,7 @@ detector = vision.ObjectDetector.create_from_options(options)
 
 
 # Load the input image.
-image = mp.Image.create_from_file(images["cup"])
+image = mp.Image.create_from_file(images["test"])
 #cv2.imshow("",cv2.imread(cat_dog))
 #cv2.waitKey(-1)
 

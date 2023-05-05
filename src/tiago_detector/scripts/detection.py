@@ -22,6 +22,7 @@ class tiagoDetection:
         self.imageWidth_pub = rospy.Publisher('image_width', Float32, queue_size=10)
         self.imageLabel_pub = rospy.Publisher('image_label', String, queue_size=10)
         rospy.Subscriber("/xtion/rgb/image_rect_color", Image, self.callback, queue_size=1, buff_size=2058)
+        
     def get_models(self):
         MODELDIR = pathlib.Path(os.path.join(pathlib.Path(__file__).parent.absolute(),'models')).glob('**/*')
         models = list()
@@ -29,6 +30,7 @@ class tiagoDetection:
             if i.is_file():
                 models.append(i)
         return models
+    
     def visualize(self,image, detection_result) -> np.ndarray:
         MARGIN = 10
         ROW_SIZE = 10
