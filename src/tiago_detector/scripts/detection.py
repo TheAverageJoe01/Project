@@ -10,6 +10,32 @@ import ros_numpy
 import os
 import pathlib
 from mediapipe.tasks.python import vision
+import json
+
+
+def get_json_file():
+    # Get the current working directory
+    current_dir =  os.path.dirname(os.path.abspath(__file__))
+    #
+    print(current_dir)
+
+    # Loop through all the files in the directory
+    for file in os.listdir(current_dir):
+        # Check if the file is a JSON file
+        if file.endswith('.json'):
+            # Return the directory path
+            return str(os.path.join(current_dir, file))
+            
+            break
+    else:
+        print("No JSON file found in current directory.")
+
+
+
+
+
+
+
 
 class tiagoDetection:
     def __init__(self):
@@ -32,6 +58,8 @@ class tiagoDetection:
                 models.append(i)
         return models
     
+    
+    
     def visualize(self,image, detection_result) -> np.ndarray:
         MARGIN = 10
         ROW_SIZE = 10
@@ -41,7 +69,13 @@ class tiagoDetection:
         centre = (0, 0)
         imageWidth = 0
         imageLabel = ''
+        unwanted = ["bed","tv","laptop"]
         for detection in detection_result.detections:
+            category = detection.categories[0]
+            category_name = category.category_name
+
+            if category_name in unwanted:
+                break
             bbox = detection.bounding_box
             start_point = bbox.origin_x, bbox.origin_y
             end_point = bbox.origin_x + bbox.width, bbox.origin_y + bbox.height
@@ -49,8 +83,7 @@ class tiagoDetection:
             imageWidth = bbox.width
             cv2.rectangle(image, start_point, end_point, TEXT_COLOR, 3)
 
-            category = detection.categories[0]
-            category_name = category.category_name
+            
             imageLabel = category_name
 
             self.imageCentre_pub.publish(centre[0])
@@ -107,7 +140,26 @@ class tiagoDetection:
                 print(f"image width: {imageWidth}")
 
                 print(f"image name: {imageLabel}")
+                with open(dump_file) as outfile:
+                    detected = json.load(outfile)
+                if detected["default"] == True:
+                    if (detected["detected"] != True):
+                        detected["detected"] = True
+
+                    with open(dump_file, 'w') as outfile:
+                        json.dump(detected ,outfile)
+
                 rospy.loginfo("Object Found")
+            else:
+                 
+                with open(dump_file) as outfile:
+                    detected = json.load(outfile)
+                        
+                if (detected["detected"] == True):
+                    detected["detected"] = False
+
+                with open(dump_file, 'w') as outfile:
+                    json.dump(detected ,outfile)
 
             #cv2.imshow("",image_copy)
             cv2.imshow("",image_copy)
@@ -132,6 +184,20 @@ class tiagoDetection:
 if __name__ == '__main__':
     rospy.init_node('tiago_detection')
     print("Starting object detector")
+    global dump_file 
+    dump_file= get_json_file()
+    with open(dump_file) as outfile:
+        detected = json.load(outfile)
+            
+    if (detected["detected"] == True):
+        detected["detected"] = False
+
+    with open(dump_file, 'w') as outfile:
+        json.dump(detected ,outfile)
+
+
+
+
     tiagoDetection = tiagoDetection()
     
     rospy.spin()
