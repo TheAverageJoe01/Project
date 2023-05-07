@@ -30,22 +30,15 @@ def get_json_file():
     else:
         print("No JSON file found in current directory.")
 
-
-
-
-
-
-
-
 class tiagoDetection:
     def __init__(self):
         self.count = 0
-        self.imageCentre = (0, 0)
+        self.objCenter = (0, 0)
         self.imageWidth = 0
         self.bridge = CvBridge()
         self.imageLabel = ''
         self.models = self.get_models()
-        self.imageCentre_pub = rospy.Publisher('image_centre', Float32, queue_size=10)
+        self.objCenter_pub = rospy.Publisher('image_centre', Float32, queue_size=10)
         self.imageWidth_pub = rospy.Publisher('image_width', Float32, queue_size=10)
         self.imageLabel_pub = rospy.Publisher('image_label', String, queue_size=10)
         rospy.Subscriber("/xtion/rgb/image_raw", Image, self.callback, queue_size=1, buff_size=2058)
@@ -69,7 +62,7 @@ class tiagoDetection:
         centre = (0, 0)
         imageWidth = 0
         imageLabel = ''
-        unwanted = ["bed","tv","laptop"]
+        unwanted = ["bed","tv","laptop","train"]
         for detection in detection_result.detections:
             category = detection.categories[0]
             category_name = category.category_name
@@ -86,7 +79,7 @@ class tiagoDetection:
             
             imageLabel = category_name
 
-            self.imageCentre_pub.publish(centre[0])
+            self.objCenter_pub.publish(centre[0])
             self.imageWidth_pub.publish(imageWidth)
             self.imageLabel_pub.publish(imageLabel)
 
@@ -117,7 +110,7 @@ class tiagoDetection:
             options = ObjectDetectorOptions( 
                 base_options=BaseOptions(model_asset_path= efficientdet_lite0),
                 max_results=5,
-                score_threshold=0.4,
+                score_threshold=0.285,
                 running_mode=VisionRunningMode.IMAGE)
 
             detector = vision.ObjectDetector.create_from_options(options)
@@ -133,10 +126,10 @@ class tiagoDetection:
             image_copy = np.copy(image.numpy_view())
             #print(image_copy)
 
-            annotated_image, imageCentre , imageWidth , imageLabel = self.visualize(image_copy, detection_result)
+            annotated_image, objCenter , imageWidth , imageLabel = self.visualize(image_copy, detection_result)
             rgb_annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
             if imageLabel!= '':
-                print(f"image centre: {imageCentre}")
+                print(f"object centre: {objCenter}")
                 print(f"image width: {imageWidth}")
 
                 print(f"image name: {imageLabel}")
@@ -162,7 +155,8 @@ class tiagoDetection:
                     json.dump(detected ,outfile)
 
             #cv2.imshow("",image_copy)
-            cv2.imshow("",image_copy)
+            # print(image_copy[0])
+            cv2.imshow("",rgb_annotated_image)
             cv2.waitKey(1)
             #rospy.spinOnce()
         elif self.count > 50:
@@ -170,8 +164,30 @@ class tiagoDetection:
         else:
             self.count += 1
 
-    
+    #iterate through 
+    #407.0, 244.5
+    # def getPostion(self,):
+    #     # Assume we have a pixel coordinate (u,v) in an image
+    #     u, v = 100, 200
 
+    #     # Assume we have the camera's intrinsic and extrinsic parameters
+    #     fx, fy = 500, 500  # focal length in x and y direction
+    #     cx, cy = 320, 240  # image center coordinates
+    #     R = np.eye(3)      # rotation matrix
+    #     T = np.zeros((3,1)) # translation vector
+
+    #     # Compute the direction and origin of the ray
+    #     ray_dir = np.array([(u - cx) / fx, (v - cy) / fy, 1.0])
+    #     ray_origin = np.zeros((3,))
+
+    #     # Compute the 3D position of the point in the real world
+    #     point_3d = np.dot(np.linalg.inv(R), ray_dir) * np.linalg.norm(T)
+
+    #     # Convert the 3D position into ROS coordinates
+    #     point_ros = np.array([point_3d[0], -point_3d[1], point_3d[2]])
+
+    #     # Print the resulting position in ROS coordinates
+    #     print(point_ros)
 
 
 

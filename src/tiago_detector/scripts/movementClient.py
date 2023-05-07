@@ -13,7 +13,7 @@ global pub_head_controller
 global sub_target_rel_pose
 global head_2_movement
 global object_found
-global pmgoal
+global PMG
 global count
 global displacement
 global object_rel_pose
@@ -49,16 +49,16 @@ def get_json_file():
 
 def home_position():
     global action_client
-    global pmgoal
+    global PMG
     # generate status
     rospy.loginfo("Go into the home position")
 
     # define Play motion configuration
-    pmgoal = PlayMotionGoal()
-    pmgoal.motion_name = 'home'
-    pmgoal.skip_planning = False
+    PMG = PlayMotionGoal()
+    PMG.motion_name = 'home'
+    PMG.skip_planning = False
     # send play motion goal --> home configuration & wait till reach position 
-    action_client.send_goal_and_wait(pmgoal)
+    action_client.send_goal_and_wait(PMG)
     
     with open(dump_file) as outfile:
         detected = json.load(outfile)
@@ -68,7 +68,7 @@ def home_position():
         json.dump(detected, outfile)
 
 
-    rospy.loginfo("Done.")
+    rospy.loginfo("finished.")
 
 
 def move_head():
@@ -110,7 +110,7 @@ def move_head():
         
         pub_head_controller.publish(trajectory)
         # interval to start next movement
-        rospy.sleep(0.7)
+        rospy.sleep(0.8)
         # Define head movement in a lowering cycle with -0.1 step to a max -1, until object is detected
         head_2_movement = max(-1, head_2_movement-0.1)
 
@@ -150,7 +150,7 @@ if __name__ == '__main__':
       
 
 
-    pmgoal = PlayMotionGoal()
+    PMG = PlayMotionGoal()
     home_position()
     
         # publsih to head controller the join trajectory 
