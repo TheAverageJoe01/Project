@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import rospy
-from sensor_msgs.msg import Image, CameraInfo
-from std_msgs.msg import Float32 ,String
+from sensor_msgs.msg import Image, CameraInfo, PointCloud2
+from tf.transformations import quaternion_from_euler
+from std_msgs.msg import Float32 ,String, Header
+from geometry_msgs.msg import Point, Quaternion, Pose, PoseStamped
 import mediapipe as mp
 import numpy as np
 import cv2
@@ -11,6 +13,7 @@ import os
 import pathlib
 from mediapipe.tasks.python import vision
 import json
+import sensor_msgs.point_cloud2 as pc2
 
 
 def get_json_file():
@@ -37,11 +40,13 @@ class tiagoDetection:
         self.imageWidth = 0
         self.bridge = CvBridge()
         self.imageLabel = ''
+        self.point_cloud = None
         self.models = self.get_models()
         self.objCenter_pub = rospy.Publisher('image_centre', Float32, queue_size=10)
         self.imageWidth_pub = rospy.Publisher('image_width', Float32, queue_size=10)
         self.imageLabel_pub = rospy.Publisher('image_label', String, queue_size=10)
         rospy.Subscriber("/xtion/rgb/image_raw", Image, self.callback, queue_size=1, buff_size=2058)
+        rospy.Subscriber("/xtion/depth_registered/points", PointCloud2, self.point_callback,queue_size=2, buff_size=2058)
         
     def get_models(self):
         MODELDIR = pathlib.Path(os.path.join(pathlib.Path(__file__).parent.absolute(),'models')).glob('**/*')
@@ -92,6 +97,8 @@ class tiagoDetection:
 
         return image , centre , imageWidth , imageLabel
 
+    def point_callback(self, data):
+        self.point_cloud = data
 
     def callback(self, data):
         if self.count == 0:
@@ -138,11 +145,11 @@ class tiagoDetection:
                 if detected["default"] == True:
                     if (detected["detected"] != True):
                         detected["detected"] = True
-
+                    
                     with open(dump_file, 'w') as outfile:
                         json.dump(detected ,outfile)
-
                 rospy.loginfo("Object Found")
+                self.publishCentre(objCenter)
             else:
                  
                 with open(dump_file) as outfile:
@@ -154,8 +161,6 @@ class tiagoDetection:
                 with open(dump_file, 'w') as outfile:
                     json.dump(detected ,outfile)
 
-            #cv2.imshow("",image_copy)
-            # print(image_copy[0])
             cv2.imshow("",rgb_annotated_image)
             cv2.waitKey(1)
             #rospy.spinOnce()
@@ -166,28 +171,24 @@ class tiagoDetection:
 
     #iterate through 
     #407.0, 244.5
-    # def getPostion(self,):
-    #     # Assume we have a pixel coordinate (u,v) in an image
-    #     u, v = 100, 200
 
-    #     # Assume we have the camera's intrinsic and extrinsic parameters
-    #     fx, fy = 500, 500  # focal length in x and y direction
-    #     cx, cy = 320, 240  # image center coordinates
-    #     R = np.eye(3)      # rotation matrix
-    #     T = np.zeros((3,1)) # translation vector
-
-    #     # Compute the direction and origin of the ray
-    #     ray_dir = np.array([(u - cx) / fx, (v - cy) / fy, 1.0])
-    #     ray_origin = np.zeros((3,))
-
-    #     # Compute the 3D position of the point in the real world
-    #     point_3d = np.dot(np.linalg.inv(R), ray_dir) * np.linalg.norm(T)
-
-    #     # Convert the 3D position into ROS coordinates
-    #     point_ros = np.array([point_3d[0], -point_3d[1], point_3d[2]])
-
-    #     # Print the resulting position in ROS coordinates
-    #     print(point_ros)
+    def publishCentre(self,objCenter):
+        print("publishing centre")
+        x = int(objCenter[0])
+        y = int(objCenter[1])
+        # print(f"x : {x} y: {y}")
+        gen = pc2.read_points(self.point_cloud, uvs=[(x,y)], skip_nans=True)
+        print(gen)
+        for p in gen:
+           print(f"x : {p[0]} y: {p[1]} z : {p[2]}")
+           q = quaternion_from_euler(1.5707, -1.5707, 1.5707)
+           if isinstance(p[0], float) and isinstance(p[1], float) and isinstance(p[2], float):
+                my_header = Header(stamp=self.point_cloud.header.stamp, frame_id=self.point_cloud.header.frame_id)
+                my_pose = Pose(position=Point(x=p[0], y=p[1], z=p[2]), orientation=Quaternion(
+                    x=q[0], y=q[1], z=q[2], w=q[3]))
+                pose_stamped = PoseStamped(header=my_header, pose=my_pose)
+                #self.pub.publish(pose_stamped)
+           
 
 
 

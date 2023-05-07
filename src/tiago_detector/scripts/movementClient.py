@@ -9,16 +9,10 @@ import os
 
 import json
 global action_client
+global PMG
 global pub_head_controller
-global sub_target_rel_pose
 global head_2_movement
 global object_found
-global PMG
-global count
-global displacement
-global object_rel_pose
-global object_abs_pose
-
 
 
 def get_json_file():
