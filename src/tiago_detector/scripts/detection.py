@@ -42,6 +42,9 @@ class tiagoDetection:
         self.imageLabel = ''
         self.point_cloud = None
         self.models = self.get_models()
+
+        self.pub = rospy.Publisher("objectCentre", PoseStamped, queue_size=10)
+
         self.objCenter_pub = rospy.Publisher('image_centre', Float32, queue_size=10)
         self.imageWidth_pub = rospy.Publisher('image_width', Float32, queue_size=10)
         self.imageLabel_pub = rospy.Publisher('image_label', String, queue_size=10)
@@ -180,14 +183,16 @@ class tiagoDetection:
         gen = pc2.read_points(self.point_cloud, uvs=[(x,y)], skip_nans=True)
         print(gen)
         for p in gen:
-           print(f"x : {p[0]} y: {p[1]} z : {p[2]}")
-           q = quaternion_from_euler(1.5707, -1.5707, 1.5707)
-           if isinstance(p[0], float) and isinstance(p[1], float) and isinstance(p[2], float):
+           
+            print(f"x : {p[0]} y: {p[1]} z : {p[2]}")
+            q = quaternion_from_euler(1.5707, -1.5707, 1.5707)
+            if isinstance(p[0], float) and isinstance(p[1], float) and isinstance(p[2], float):
                 my_header = Header(stamp=self.point_cloud.header.stamp, frame_id=self.point_cloud.header.frame_id)
                 my_pose = Pose(position=Point(x=p[0], y=p[1], z=p[2]), orientation=Quaternion(
                     x=q[0], y=q[1], z=q[2], w=q[3]))
                 pose_stamped = PoseStamped(header=my_header, pose=my_pose)
-                #self.pub.publish(pose_stamped)
+                self.pub.publish(pose_stamped)
+                    #self.publishCentre(objCenter)
            
 
 

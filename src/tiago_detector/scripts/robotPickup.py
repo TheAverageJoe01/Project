@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 import rospy
 import sys
 import tf
@@ -16,7 +16,7 @@ class tiago_moveit:
         self.move_group.set_end_effector_link("gripper_grasping_frame")
         self.move_group.set_goal_tolerance(0.05)
 
-        rospy.Subscriber("/click_pose", PoseStamped, self.callback, queue_size=1)
+        rospy.Subscriber("objectCentre", PoseStamped, self.callback, queue_size=1)
 
         self.translation = [0, 0, 0]
         self.rotation = [0, 0, 0, 0]
@@ -46,7 +46,7 @@ class tiago_moveit:
     def callback(self, data):
         self.translate_pose_to_base(data)
         
-        waypoints = [self.click_pose()]
+        waypoints = [data.pose]
         
         (plan, fraction) = self.compute_waypoint_path(waypoints)
 

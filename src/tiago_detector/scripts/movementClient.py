@@ -154,5 +154,5 @@ if __name__ == '__main__':
     
     
     head_2_movement = 0 
-    
     move_head()
+   
