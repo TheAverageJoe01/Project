@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import rospy
 import sys
 import tf
@@ -79,8 +79,9 @@ class tiago_moveit:
 
     def compute_waypoint_path(self, waypoints):
         print("Planning...")
+        print(waypoints)
         (plan, fraction) = self.move_group.compute_cartesian_path(
-            waypoints, 1.0, 0.2, avoid_collisions=False)
+            waypoints, 0.02, 0, avoid_collisions=False)
         print("Found plan!")
         print("fraction: %s" % fraction)
         return plan, fraction

@@ -84,6 +84,7 @@ def move_head():
             if object_found == True:
                 rospy.loginfo("Object found")
                 rospy.sleep(0.2)
+                
                 break
                 
 
