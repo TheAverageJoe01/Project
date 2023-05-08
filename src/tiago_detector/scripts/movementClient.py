@@ -6,13 +6,15 @@ from play_motion_msgs.msg import PlayMotionAction, PlayMotionGoal
 from actionlib import SimpleActionClient
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 import os
-
 import json
-global action_client
+
+
+# setting global variables
+global actionClient
 global PMG
-global pub_head_controller
-global head_2_movement
-global object_found
+global pubHeadcontroller
+global headMovement
+global objectFound
 
 
 def get_json_file():
@@ -34,26 +36,22 @@ def get_json_file():
 
 
 
-
-
-
-
-
-
-
-def home_position():
-    global action_client
+def homePosition():
+    # declare global variables
+    global actionClient
     global PMG
-    # generate status
+    # print a message indicating that the robot is going into the home position
     rospy.loginfo("Go into the home position")
 
-    # define Play motion configuration
+    # Create a PlayMotionGoal object
     PMG = PlayMotionGoal()
     PMG.motion_name = 'home'
     PMG.skip_planning = False
-    # send play motion goal --> home configuration & wait till reach position 
-    action_client.send_goal_and_wait(PMG)
+
+    # Send the goal to the action server and wait for it to complete
+    actionClient.send_goal_and_wait(PMG)
     
+    # Update the JSON file to indicate that the default object is selected
     with open(dump_file) as outfile:
         detected = json.load(outfile)
 
@@ -61,99 +59,107 @@ def home_position():
     with open(dump_file, 'w') as outfile:
         json.dump(detected, outfile)
 
-
+    # print a message indicating that the robot has finished moving to the home position
     rospy.loginfo("finished.")
 
 
-def move_head():
+def movingHead():
     # Define global variabile
-    global pub_head_controller
-    global head_2_movement
-    global object_found
+    global pubHeadcontroller
+    global headMovement
+    global objectFound
 
-    # generate status
     rospy.loginfo("Moving head")
     
-
-    object_found = False
-    # loop function until object was found
-    while object_found != True:
+    # Initialise the objectFound flag
+    objectFound = False
+    while objectFound != True:
         with open(get_json_file()) as output_file:
             detected = json.load(output_file)
-            object_found = detected['detected']
-            if object_found == True:
+            objectFound = detected['detected']
+            # If an object is found, log the message and sleep for 0.2 seconds
+            if objectFound == True:
                 rospy.loginfo("Object found")
                 rospy.sleep(0.2)
                 
                 break
-                
-
-        
-        # trajectory_msgs --> JointTrajectory
+            
+        # Define the trajectory for moving the head
         trajectory = JointTrajectory()
-        # Define joint in use in order to move head 
         trajectory.joint_names = ['head_1_joint', 'head_2_joint']
 
-        # ***The action can be used to give a trajectory to the head expressed in several waypoints***. 
-        trajectory_points = JointTrajectoryPoint()
-        # change coordinate just along z axis
-        trajectory_points.positions = [0.0, head_2_movement]
-        # Define time action 
-        trajectory_points.time_from_start = rospy.Duration(1.0)
-
-        trajectory.points.append(trajectory_points)
+        # Define the trajectory points
+        trajectoryPoints = JointTrajectoryPoint()
+        trajectoryPoints.positions = [0.0, headMovement]
+        trajectoryPoints.time_from_start = rospy.Duration(1.0)
+        trajectory.points.append(trajectoryPoints)
         
-        pub_head_controller.publish(trajectory)
-        # interval to start next movement
+        # Publish the trajectory to the head controller
+        pubHeadcontroller.publish(trajectory)
+        
+        # Sleep for 0.8 seconds before moving the head again
         rospy.sleep(0.8)
-        # Define head movement in a lowering cycle with -0.1 step to a max -1, until object is detected
-        head_2_movement = max(-1, head_2_movement-0.1)
+        # Decrement the head movement angle
+        headMovement = max(-1, headMovement-0.1)
 
     rospy.loginfo("Done.")
 
-def move_object_loop():
-    object_found = False
-    while object_found!= True:
-        print(object_found)
+def moveObejctloop():
+    # set a flag to check if an object is found
+    objectFound = False
+     # loop until objectFound is true
+    while objectFound!= True:
+        # open json file and read detected object status
+        print(objectFound)
         with open(dump_file) as outfile:
             detected = json.load(outfile)
-            object_found = detected['detected']
-        move_head()
+            objectFound = detected['detected']
+        # call the movingHead() function
+        movingHead()
 
 
 
 if __name__ == '__main__':
    
+   # Define global variable
     global dump_file
+    # Set the dump_file variable with the path of the JSON output file
     dump_file = get_json_file()
 
 
-    
+    # Open the JSON output file and load the data into the detected variable
     with open(dump_file) as outfile:
         detected = json.load(outfile)
 
+    # Set the 'default' key to False in the detected dictionary
     detected['default'] = False
+    # Write the updated detected dictionary back to the JSON output file
     with open(dump_file, 'w') as outfile:
         json.dump(detected, outfile)
+    # Initialize the ROS node with the name 'MovementClient'
     rospy.init_node('MovementClient')
-    action_client = SimpleActionClient('/play_motion', PlayMotionAction)
-    # time out in case of lack communication between client & server 
-    if not action_client.wait_for_server(rospy.Duration(20)):
+    # Create a SimpleActionClient for the '/play_motion' action server
+    actionClient = SimpleActionClient('/play_motion', PlayMotionAction)
+    # Wait for the action server to become available for a maximum of 20 seconds
+    if not actionClient.wait_for_server(rospy.Duration(20)):
+        # If the connection times out, log an error message and exit
         rospy.logerr("Could not connect to /play_motion")
         exit()
       
       
 
-
+    # Create a PlayMotionGoal object
     PMG = PlayMotionGoal()
-    home_position()
-    
-        # publsih to head controller the join trajectory 
-        
-    pub_head_controller = rospy.Publisher('/head_controller/command', JointTrajectory, queue_size=1)
+    # Move the robot to the home position
+    homePosition()
     
     
+    # Create a publisher to control the head movement    
+    pubHeadcontroller = rospy.Publisher('/head_controller/command', JointTrajectory, queue_size=1)
     
-    head_2_movement = 0 
-    move_head()
+    
+    # Initialise the head movement variable to 0
+    headMovement = 0 
+    # Start moving the head
+    movingHead()
    
