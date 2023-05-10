@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+#Some of the code has been adapted from:
+#https://developers.google.com/mediapipe/solutions/vision/object_detector/python
 import rospy
 from sensor_msgs.msg import Image, CameraInfo, PointCloud2
 from tf.transformations import quaternion_from_euler
@@ -240,13 +243,6 @@ class tiagoDetection:
                 self.pub.publish(pose_stamped)
                     #self.publishCentre(objCenter)
            
-
-
-
-# from file/ sensor -> 
-
-
-
 
 
 if __name__ == '__main__':

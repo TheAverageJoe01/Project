@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
+# Some of the code in this file was adapted from:
+# https://github.com/LCAS/LCASTOR/tree/main/examples
 import rospy
 from geometry_msgs.msg import Pose, Twist, PoseStamped, Point
-import math
 from play_motion_msgs.msg import PlayMotionAction, PlayMotionGoal
 from actionlib import SimpleActionClient
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
@@ -40,8 +41,9 @@ def homePosition():
     # declare global variables
     global actionClient
     global PMG
+
     # print a message indicating that the robot is going into the home position
-    rospy.loginfo("Go into the home position")
+    rospy.loginfo("Going to home position")
 
     # Create a PlayMotionGoal object
     PMG = PlayMotionGoal()
@@ -60,7 +62,7 @@ def homePosition():
         json.dump(detected, outfile)
 
     # print a message indicating that the robot has finished moving to the home position
-    rospy.loginfo("finished.")
+    rospy.loginfo("finished moving to home position")
 
 
 def movingHead():

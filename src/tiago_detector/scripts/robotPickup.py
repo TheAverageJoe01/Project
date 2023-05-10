@@ -82,11 +82,11 @@ class robotGrasp:
 
     def poseTobase(self, pose_stamped):
         # Transforms the given pose_stamped from its frame to "/base_footprint" frame.
-        pose_to_base = self.listener.transformPose("/base_footprint", pose_stamped)
+        poseTobase = self.listener.transformPose("/base_footprint", pose_stamped)
 
         # Extracts the position and orientation from the transformed pose.
-        trans = pose_to_base.pose.position
-        rot = pose_to_base.pose.orientation
+        trans = poseTobase.pose.position
+        rot = poseTobase.pose.orientation
 
         # Saves the position and orientation as attributes of the class.
         self.trans = [trans.x, trans.y, trans.z]
@@ -94,16 +94,16 @@ class robotGrasp:
 
     def displayInfo(self, print_robot_state=False):
         # Get the name of the planning frame used by MoveIt
-        planning_frame = self.move_group.get_planning_frame()
-        print("Planning Frame: %s" % planning_frame)
+        planningFrame = self.move_group.get_planning_frame()
+        print(f"Planning Frame: {planningFrame}")
 
         # Get the name of the end effector link used by MoveIt
-        eef_link = self.move_group.get_end_effector_link()
-        print("End effector link: %s" % eef_link)
+        endElink = self.move_group.get_end_effector_link()
+        print(f"End effector link: {endElink}")
 
         # Get the names of all the planning groups available for the robot
-        group_names = self.robot.get_group_names()
-        print("Available Planning Groups: %s" % group_names)
+        groupNames = self.robot.get_group_names()
+        print(f"Available Planning Groups: {groupNames}")
 
         # If the flag to print the robot's current state is set to True, print it out
         if (print_robot_state):
@@ -117,7 +117,7 @@ class robotGrasp:
 
     def findWaypoint(self, waypoints):
         # Print a message indicating that the planning process is starting.
-        print("Planning...")
+        print("Planning Waypoints...")
 
         # Print the waypoints that will be used for the path planning.
         print(waypoints)
@@ -132,7 +132,7 @@ class robotGrasp:
 
         # Print a message indicating that the planning process has completed and display the threshold value used in planning.
         print("Plan Found")
-        print("threshold: %s" % threshold)
+        print(f"threshold:  {threshold}")
 
         # Return the computed plan and the threshold value.
         return plan, threshold
@@ -153,6 +153,7 @@ class robotGrasp:
             print("threshold was not 1.0, not executing path")
 
 def main():
+    
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node("robotGrasp_node")
     robot_controller = robotGrasp()

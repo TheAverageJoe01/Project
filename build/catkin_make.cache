@@ -1,2 +1,2 @@
-project_pkg:tiago_detector
+tiago_detector
 -DCATKIN_DEVEL_PREFIX=/home/joe/Desktop/work/Project/devel -DCMAKE_INSTALL_PREFIX=/home/joe/Desktop/work/Project/install -G Unix Makefiles
